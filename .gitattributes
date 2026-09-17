@@ -1,0 +1,8 @@
+# Store and check out all text as LF, on every machine, so a Windows edit and a
+# Mac edit of the same paragraph diff as one line rather than as the file.
+# This matches the engine repository, which these files used to be copied from.
+* text=auto eol=lf
+
+# The deck is the only binary here, and it is hand-edited in PowerPoint. Git
+# must never line-ending-convert it or try to diff it as text.
+*.pptx binary

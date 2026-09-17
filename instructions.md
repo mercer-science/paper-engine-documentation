@@ -2,11 +2,11 @@
   THE GUIDE. Written by hand; nothing checks the prose, so when a module
   changes this is the file that has to be remembered.
 
-  IT IS MARKDOWN SO THAT GITHUB RENDERS IT. This repository is private and
-  GitHub renders HTML in a repo view for nobody, so the styled page this
-  replaced opened as a wall of markup for every member who followed the link.
-  Pages was the alternative and is unavailable: on a Free organization, Pages
-  cannot serve a private repository at all.
+  IT IS MARKDOWN SO THAT GITHUB RENDERS IT. The private repository this is
+  generated from renders HTML in a repo view for nobody, so the styled page
+  this replaced opened as a wall of markup for every member who followed the
+  link. Pages was the alternative and is unavailable there: on a Free
+  organization, Pages cannot serve a private repository at all.
 
   So the formatting here is what GitHub's own renderer gives and nothing else:
   alert blocks, tables, collapsible sections. No HTML that GitHub strips (it
@@ -16,12 +16,22 @@
 
   THE ROOT README IS THE SHORT VERSION AND IS USER-FACING ONLY - install it,
   say what you want. This file is the in-depth one: how it connects, what each
-  skill does, and how the machinery works. Maintainer instructions are in
-  ../CONTRIBUTING.md and belong neither here nor in the README.
+  skill does, and how the machinery works. Maintainer instructions are in the
+  engine repository's CONTRIBUTING.md and belong neither here nor in the README.
 
   THIS IS THE PUBLIC COPY. It is generated from help/instructions.md in the
   private engine repository by rewriting every relative link to an absolute
   one. Edit it THERE, not here; an edit made here is lost at the next sync.
+  CONTRIBUTING.md in that repository lists the rewrites, and the four blocks
+  that exist only in this copy and have to be put back after every sync: this
+  paragraph, the NOTE below, the help/README.md link in the first footer line,
+  and the license line at the end.
+
+  THE README BESIDE THIS FILE IS NOT A COPY OF ANYTHING. It is the original and
+  is edited here; the engine repository's README is a short pointer to it. Only
+  this file and the deck are still mirrored.
+
+  Licensed CC BY 4.0; see LICENSE.
 -->
 
 # Paper Engine
@@ -835,6 +845,10 @@ Stated here because this is where somebody would go looking, and a help page tha
 
 ---
 
-*Written by hand and checked against nothing — if a module has changed and this page has not, this page is the one that is wrong. The picture beside it, [`paper_engine_overview.pptx`](paper_engine_overview.pptx), has a generator, but the generator runs only when somebody asks it to, so that deck is yours to edit. See [`README.md`](README.md).*
+*Written by hand and checked against nothing — if a module has changed and this page has not, this page is the one that is wrong. The picture beside it, [`paper_engine_overview.pptx`](paper_engine_overview.pptx), has a generator, but the generator runs only when somebody asks it to, so that deck is yours to edit. How, and what the generator is still for, is [`help/README.md`](https://github.com/mercer-science/paper-engine/blob/main/help/README.md) in the engine repository.*
 
 *Details live in the skills themselves — [`writing-engine`](https://github.com/mercer-science/paper-engine/blob/main/skills/writing-engine/SKILL.md), [`idea-generation`](https://github.com/mercer-science/paper-engine/blob/main/skills/idea-generation/SKILL.md), [`setup-project-directory`](https://github.com/mercer-science/paper-engine/blob/main/skills/setup-project-directory/SKILL.md), [`create-graphic-figure`](https://github.com/mercer-science/paper-engine/blob/main/skills/create-graphic-figure/SKILL.md), [`refine-figure`](https://github.com/mercer-science/paper-engine/blob/main/skills/refine-figure/SKILL.md), [`flag-resolver`](https://github.com/mercer-science/paper-engine/blob/main/skills/flag-resolver/SKILL.md), [`analysis`](https://github.com/mercer-science/paper-engine/blob/main/skills/analysis/SKILL.md) — and the reasoning lives in [`specs/`](https://github.com/mercer-science/paper-engine/tree/main/specs/). Where this page and a skill disagree, **the skill is right**. Setting somebody else up is [`SETUP-NEW-MEMBER.md`](https://github.com/mercer-science/paper-engine/blob/main/help/SETUP-NEW-MEMBER.md); changing the toolkit is [`CONTRIBUTING.md`](https://github.com/mercer-science/paper-engine/blob/main/CONTRIBUTING.md).*
+
+---
+
+*© 2026 Russell Mercer. This guide is licensed [CC BY 4.0](LICENSE) — quote it, translate it, build on it, with credit. The engine's source code is private and is not covered by that license.*

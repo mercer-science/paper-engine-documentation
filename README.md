@@ -494,3 +494,30 @@ Nothing is ever sent without consent, and `python tools/report.py consent
 | **[The full guide](instructions.md)** | Every stage, every file the engine reads and writes, and what to do when one of them is wrong. Start at section 4 — it is the only one you have to read. |
 | **[CONTRIBUTING.md](https://github.com/mercer-science/paper-engine/blob/main/CONTRIBUTING.md)** | Working *on* the toolkit rather than with it: the layout, adding a skill or an engine, the suites, and who owns which document. Nothing in it is needed to write a paper. |
 | **[The slide overview](paper_engine_overview.pptx)** | The four stages and how they hand off, on one page. |
+
+---
+
+# License
+
+This documentation — this page, [the full guide](instructions.md) and
+[the slide overview](paper_engine_overview.pptx) — is licensed
+**[Creative Commons Attribution 4.0 International](LICENSE)** (CC BY 4.0). Read
+it, quote it, translate it, adapt it, teach from it, commercially or not: the
+one condition is that you credit it and say if you changed it.
+
+> © 2026 Russell Mercer. *Paper Engine documentation*, mercer-science.
+> <https://github.com/mercer-science/paper-engine-documentation> — CC BY 4.0.
+
+**The engine's source code is not covered by this license.** The code lives in
+the private [mercer-science/paper-engine](https://github.com/mercer-science/paper-engine)
+repository, which carries no license and therefore grants no rights in the code
+itself. Being added to it is an invitation to use it, not a license to
+redistribute it.
+
+**This page is the original, not a copy.** It used to be mirrored from the
+private engine repository, nothing enforced the mirror, and it drifted; that
+repository's README is now a short pointer to this one. So there is exactly one
+version of this page and it is this one.
+
+The guide and the deck beside it are still mirrored from the private
+repository, and are published from there.
