@@ -133,6 +133,26 @@ One sentence to the agent:
 
 That is the whole install.
 
+## Keeping It Up to Date
+
+If you installed the plugin, `/plugin update` handles it — but read the caution
+about `/plugin uninstall` at the bottom of this page first.
+
+If you **cloned** the repository instead, an update is three commands, and the
+third is not optional:
+
+```bash
+git pull
+python tools/install_skills.py install
+python tools/install_skills.py status
+```
+
+The pointers that make the skills findable from any directory go stale on a
+pull that moves a file, and **nothing reports a stale pointer while you work.**
+A harness that cannot resolve a skill does not announce a missing skill — it
+writes the paper without it. `status` is the only thing that will tell you, so
+run it while you are still thinking about the update.
+
 ---
 
 # Using It
@@ -259,8 +279,9 @@ The submission package will include any necessary disclaimers for generative AI 
 ### Writing Review
 
 Every other check in the engine asks whether the paper is *correct*. This one asks
-whether it is *readable*. It runs on every build, over the drafted sections, in the
-order a person would read them.
+whether it is *readable* — and then **fixes what it finds, before you ever see the
+draft.** It runs on every build, over the drafted sections, in the order a person
+would read them.
 
 Three things are measured:
 
@@ -279,27 +300,47 @@ Three things are measured:
   these in a published paper, and they are the clearest sign of a draft that was
   assembled rather than written.
 
-**These report. They never block.** That is a deliberate rule, not an oversight. The
-moment a readability score can fail a build, the drafter starts writing to beat the
-score instead of writing to be read — so a build is never held up over prose, and the
-verdict on the paper is exactly the same whether the reading findings number zero or
-five hundred.
+**The readability findings are fixed in the round that found them.** Handing you a
+draft with a list of things wrong with it and nothing done about any of them is not
+a review, it is homework — so the measurement runs the moment the sections are
+drafted, and the rewrite pass is given the findings and told to work them **before
+any checker reads the paper.** The abbreviation used before it was defined and the
+`this` with no noun behind it are gone by the time anything reviews the draft. What
+reaches you afterwards is what a reader could not follow for reasons no engine can
+count.
 
-What you get back is a list of findings grouped by problem, each with one example and
-where to find it, plus a row per section showing its word and sentence counts,
-sentence-length average and spread, opening-sentence lengths, and passive share. You
-decide what is worth fixing. Tell Claude which, and the next round rewrites those
-paragraphs against the measurements.
+You are **told** what changed, not asked first: the round summary names the sections
+rewritten, the findings acted on, and the ones the pass declined with its reason for
+each. Set `comprehension_fix: ask` if you would rather approve every rewrite, or
+`off` to turn the pass off entirely.
+
+Two things it is never allowed to do. It cannot change what the text **claims** — the
+numbers and the citekeys must come back identical or the section is restored from its
+snapshot — and **it cannot see the numbers about its own prose.** Passive share and
+average sentence length go to you and are withheld from the rewrite, because a
+measurement that names no sentence can only be chased, and prose written to move a
+number is worse than the prose it replaced. It gets the findings that name a
+sentence, and nothing else.
+
+**No prose measurement can fail a build.** That part has not changed and is
+deliberate: the moment a readability score can fail a build, the drafter starts
+writing to beat the score instead of writing to be read. But "it cannot block" was
+never a reason for nothing to act on it, and for a while this page said it as though
+it were.
+
+What you still get in the report is a row per section — word and sentence counts,
+sentence-length average and spread, opening-sentence lengths, passive share — plus
+anything the pass left alone and why.
 
 A fourth thing runs alongside them: an audit for the 25 known tells of
 AI-written prose — significance inflation, promotional adjectives, *"delve"* and
 *"testament to"*, formulaic challenge-and-triumph openings, the three-item list
 that turns up everywhere. Fifteen of the 25 are countable and are counted; the
-rest are judgment and go to the same agent that reads for quality. Four of them
-are reported to you and are deliberately **never** handed to the rewrite pass,
-because they name a construct rather than a sentence and the only way to act on
-one is to hunt it — which is writing to beat the metric, the exact thing this
-whole section refuses to do.
+rest are judgment and go to the same agent that reads for quality. Those verdicts
+are acted on too — a finding that agent marks *apply* is rewritten in the same
+round. Four of the 25 are reported to you and are deliberately **never** handed to
+the rewrite pass, for the same reason the densities are not: they name a construct
+rather than a sentence, and the only way to act on one is to hunt it.
 
 The word lists ship in two tiers for the same reason. There is no experiment
 that *delves*, so that one is simply asserted; but `robust` is a real property,
@@ -444,3 +485,12 @@ Nothing is ever sent without consent, and `python tools/report.py consent
 > numbering, the statuses and the "seen again" counts are all computed.
 > [Section 11 of the guide](instructions.md#11-when-something-looks-wrong)
 > lists what is known-broken and not yet fixed.
+---
+
+# Where Else to Read
+
+| | |
+|---|---|
+| **[The full guide](instructions.md)** | Every stage, every file the engine reads and writes, and what to do when one of them is wrong. Start at section 4 — it is the only one you have to read. |
+| **[CONTRIBUTING.md](https://github.com/mercer-science/paper-engine/blob/main/CONTRIBUTING.md)** | Working *on* the toolkit rather than with it: the layout, adding a skill or an engine, the suites, and who owns which document. Nothing in it is needed to write a paper. |
+| **[The slide overview](paper_engine_overview.pptx)** | The four stages and how they hand off, on one page. |
