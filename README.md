@@ -32,9 +32,9 @@ the engine reads and writes, and what to do when one of them is wrong — is
 [slide overview](paper_engine_overview.pptx) of how the four stages hand off to
 each other.
 
-**This repository is documentation only.** The engine's code is private; read
-this page and the guide, then email **rmercer2@byu.edu** with your GitHub
-username and a sentence about what you are working on, and you will be added to
+**This repository is documentation only.** The engine's code is private for security.
+Email **rmercer2@byu.edu** with your GitHub username and a sentence about what you
+are working on, and you will be added to
 [mercer-science/paper-engine](https://github.com/mercer-science/paper-engine).
 
 ---
@@ -299,53 +299,7 @@ Three things are measured:
   section will discuss…"*, *"as outlined above"*. A reader of the journal never sees
   these in a published paper, and they are the clearest sign of a draft that was
   assembled rather than written.
-
-**The readability findings are fixed in the round that found them.** Handing you a
-draft with a list of things wrong with it and nothing done about any of them is not
-a review, it is homework — so the measurement runs the moment the sections are
-drafted, and the rewrite pass is given the findings and told to work them **before
-any checker reads the paper.** The abbreviation used before it was defined and the
-`this` with no noun behind it are gone by the time anything reviews the draft. What
-reaches you afterwards is what a reader could not follow for reasons no engine can
-count.
-
-You are **told** what changed, not asked first: the round summary names the sections
-rewritten, the findings acted on, and the ones the pass declined with its reason for
-each. Set `comprehension_fix: ask` if you would rather approve every rewrite, or
-`off` to turn the pass off entirely.
-
-Two things it is never allowed to do. It cannot change what the text **claims** — the
-numbers and the citekeys must come back identical or the section is restored from its
-snapshot — and **it cannot see the numbers about its own prose.** Passive share and
-average sentence length go to you and are withheld from the rewrite, because a
-measurement that names no sentence can only be chased, and prose written to move a
-number is worse than the prose it replaced. It gets the findings that name a
-sentence, and nothing else.
-
-**No prose measurement can fail a build.** That part has not changed and is
-deliberate: the moment a readability score can fail a build, the drafter starts
-writing to beat the score instead of writing to be read. But "it cannot block" was
-never a reason for nothing to act on it, and for a while this page said it as though
-it were.
-
-What you still get in the report is a row per section — word and sentence counts,
-sentence-length average and spread, opening-sentence lengths, passive share — plus
-anything the pass left alone and why.
-
-A fourth thing runs alongside them: an audit for the 25 known tells of
-AI-written prose — significance inflation, promotional adjectives, *"delve"* and
-*"testament to"*, formulaic challenge-and-triumph openings, the three-item list
-that turns up everywhere. Fifteen of the 25 are countable and are counted; the
-rest are judgment and go to the same agent that reads for quality. Those verdicts
-are acted on too — a finding that agent marks *apply* is rewritten in the same
-round. Four of the 25 are reported to you and are deliberately **never** handed to
-the rewrite pass, for the same reason the densities are not: they name a construct
-rather than a sentence, and the only way to act on one is to hunt it.
-
-The word lists ship in two tiers for the same reason. There is no experiment
-that *delves*, so that one is simply asserted; but `robust` is a real property,
-`high-throughput` is the name of a method, and a flat list that fires on those
-is a check people learn to ignore.
+- **AI Voice Check** - An audit for the 25 known tells of AI-written prose.
 
 ### Stats Review
 
