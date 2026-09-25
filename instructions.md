@@ -20,12 +20,17 @@
   engine repository's CONTRIBUTING.md and belong neither here nor in the README.
 
   THIS IS THE PUBLIC COPY. It is generated from help/instructions.md in the
-  private engine repository by rewriting every relative link to an absolute
-  one. Edit it THERE, not here; an edit made here is lost at the next sync.
-  CONTRIBUTING.md in that repository lists the rewrites, and the four blocks
-  that exist only in this copy and have to be put back after every sync: this
-  paragraph, the NOTE below, the help/README.md link in the first footer line,
-  and the license line at the end.
+  private engine repository by `release.py publish-docs`, which rewrites every
+  relative link to an absolute one. Edit the GUIDE there, not here; an edit to
+  the guide made here is lost at the next sync.
+
+  THIS COMMENT IS THE EXCEPTION, and so are three other blocks. The publisher
+  carries them over from the published page rather than from the private one:
+  this whole comment, the NOTE below, the help/README.md link in the first
+  footer line, and the license line at the end. They are public-only, they are
+  edited HERE, and they survive every sync - the publisher refuses to publish
+  rather than drop one. CONTRIBUTING.md in the engine repository lists the
+  link rewrites.
 
   THE README BESIDE THIS FILE IS NOT A COPY OF ANYTHING. It is the original and
   is edited here; the engine repository's README is a short pointer to it. Only
@@ -86,7 +91,7 @@ Knowing which of the three you are dealing with explains almost every question a
 
 | Part | What it is | Where it lives |
 |---|---|---|
-| **Seven skills** | Markdown instructions your agent reads. They ask you things, decide things, and drive the engines. No skill counts anything itself | `skills/<name>/SKILL.md` |
+| **Eight skills** | Markdown instructions your agent reads. They ask you things, decide things, and drive the engines. No skill counts anything itself | `skills/<name>/SKILL.md` |
 | **Fourteen engines** | Plain command-line Python programs. No agent, no API key, no harness — you can run any of them yourself | `tools/*.py` |
 | **Your project folder** | Every fact about your paper: the outline, the data, the captions, the journal's requirements, the round history | your own directory, nowhere else |
 
@@ -130,7 +135,7 @@ install.packages(c("ggplot2", "dplyr", "readr", "patchwork", "yaml", "here",
 
 ### 2.2 Route 1 — the plugin
 
-**Two routes exist and both are supported.** They install the same seven skills from the same seven `SKILL.md` files — the plugin does not carry a second copy of anything. Use the plugin if you are in the group and have Claude Code; use the clone if you do not have plugin access or you are working on the toolkit itself.
+**Two routes exist and both are supported.** They install the same eight skills from the same eight `SKILL.md` files — the plugin does not carry a second copy of anything. Use the plugin if you are in the group and have Claude Code; use the clone if you do not have plugin access or you are working on the toolkit itself.
 
 First, in the terminal you will start Claude Code from. Both lines are **steps, not troubleshooting**: each one prevents a failure whose error message does not mention it.
 
@@ -208,7 +213,7 @@ The other half of proving it is to watch it get *used*. When a skill fires, the 
 | What you see | What it actually is |
 |---|---|
 | `/plugin marketplace add` fails with an SSH or host-key error, on a repository you can read | GitHub shorthand clones over SSH by default. Set `CLAUDE_CODE_PLUGIN_PREFER_HTTPS=1` and try again |
-| It worked, then quietly stopped picking up changes | the background refresh runs with git credential helpers disabled, so a private marketplace can stop refreshing without saying so. `CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE=1` keeps the last good copy working |
+| It worked, then quietly stopped picking up changes | the background refresh runs with git credential helpers disabled, so a private marketplace can stop refreshing without saying so. `CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE=1` keeps the last good copy working. To find out whether it has happened to you, [11.1](#111-am-i-behind) — that check uses your own login and is not affected |
 | A skill is never offered, or the drafts look thin | the pointers. `install_skills.py status`, then `install` |
 | `ModuleNotFoundError: requests` | the pip line in [2.1](#2-install-it-once) |
 | `python` is not recognised | `python3` on macOS and Linux; on Windows, Python is not on `PATH` |
@@ -228,7 +233,7 @@ If it is none of those, say what happened to the agent and let it file the defec
 > **Never run `/plugin uninstall`.** It deletes the plugin's data directory, and that takes your learned writing rules and any unsent defect reports with it — no prompt, no warning, and **no upstream copy exists anywhere, by design**. To move machines or reinstall, copy that directory out first. This is an open defect, not intended behaviour; see [section 11](#11-when-something-looks-wrong).
 
 > [!CAUTION]
-> **Never pass the toolkit around as a folder** — not over OneDrive or a shared drive, not as a zip, and not with `/plugin marketplace add <a local path>`. A directory source is a filesystem *copy*, so it carries the files this repository deliberately does not ship: somebody's NCBI key, somebody's reports token, and copyrighted PDFs. `.gitignore` only applies to a route that goes through git. That was measured, not assumed. Git or the plugin; nothing else.
+> **Never pass the toolkit around as a folder** — not over OneDrive or a shared drive, not as a zip, and not with `/plugin marketplace add <a local path>`. A directory source is a filesystem *copy*, so it carries the files this repository deliberately does not ship: somebody's NCBI key, their own learned drafting rules, and copyrighted PDFs. `.gitignore` only applies to a route that goes through git. That was measured, not assumed. Git or the plugin; nothing else.
 
 ---
 
@@ -282,6 +287,7 @@ This section is why the rest of the page is optional reading. Say something like
 | find the paper that says X · is this citation real · check my references | `scholar.py` — never from memory |
 | what does this compound weigh · what is its SMILES | `scholar.py compound` |
 | is there a structure for this protein · what does AlphaFold have | `structure.py` |
+| what else looks like this sequence · what is on this operon · fold this | `sequence.py` — offered in idea generation, never run unasked |
 | draft the introduction · write the methods · rewrite the discussion | [`writing-engine`](https://github.com/mercer-science/paper-engine/blob/main/skills/writing-engine/SKILL.md), scoped to those sections |
 | format for *journal* · does this fit their limits · what do they require | `writing-engine` + `format-check` |
 | my coauthor sent edits · here is a tracked-changes file | `writing-engine` ingest + `docx_edits.py` |
@@ -289,6 +295,7 @@ This section is why the rest of the page is optional reading. Say something like
 | build the .docx · assemble it · give me something to send | `manuscript.py assemble` |
 | is this ready to submit · what does the journal still need | `writing-engine` submission package |
 | what is still blocking this · answer the questions it raised · what are all these flags | [`flag-resolver`](https://github.com/mercer-science/paper-engine/blob/main/skills/flag-resolver/SKILL.md) |
+| my folder is a mess · files everywhere · I don't know where anything is · sort out / clean up / tidy this folder · sort my figures out | [`reorganize-directory`](https://github.com/mercer-science/paper-engine/blob/main/skills/reorganize-directory/SKILL.md) |
 | the engine did something wrong · it keeps doing X | `manuscript.py log-issue` |
 
 > [!NOTE]
@@ -322,6 +329,21 @@ At the end you choose where it goes:
 | a project that already exists | An **additive merge**: guiding papers, a dated takeaway block, proposed methods, and an outline *proposal*. Nothing is overwritten — every row of the preview is ADD, APPEND, NEW or PROPOSE, and the writer refuses to commit anything else. |
 
 **What it will not do:** invent a gap out of a search that returned nothing, cite a paper it has not verified, or write a proposed method into `data/methods_facts.yml` — proposed methods and recorded facts are kept apart on purpose, because the drafter treats that file as measured truth.
+
+#### `plan/lab_pack_brief.md` — the lab's own steps, in your project
+
+**If your lab has a resource pack installed**, idea generation leaves one more file behind: every step of your lab's route — growth, grid prep, freezing, collection, processing — **quoted from the pack word for word and dated**, with whatever you decided about that step and whatever you left open written against it.
+
+It is there so the question you hit at the bench three weeks later has somewhere to be answered from. Ask about any of it in a session opened in the project folder.
+
+**Three skills write it**, so you get it whichever way you started: `idea-generation` at the end, `setup-project-directory` when it scaffolds a new folder, and `reorganize-directory` when it sorts out a folder that already had months of work in it. The last two have no decisions to record yet, so every step reads *"nothing project-specific is recorded for this step yet"* — that is the invitation, and idea generation fills those lines in later without touching your notes.
+
+Four things about it:
+
+- **Every number in it was true on the pack's curation date, for the standard case.** If it contradicts what you know, you are right and the pack is stale — say so, and fix it at the source. **Nothing in it is a methods fact**; what you actually did goes in `data/methods_facts.yml`, written by you.
+- **`## Your Notes` at the end is yours.** Regenerating the file leaves that section exactly as you wrote it.
+- **It can be rebuilt any time**, on any project: `python tools/labpack.py brief --project "<the project>"`. And `--check` says in one line whether the pack has moved since the file was written.
+- **No pack, no file**, and nothing goes wrong — every question a pack would have made specific is asked generically instead, which is how the skill has always worked.
 
 ### `setup-project-directory` — the folder everything else assumes
 
@@ -389,7 +411,9 @@ This stage is yours. The toolkit's job here is to be somewhere obvious to put th
 | `data/raw_images/` | Micrographs, gels, spectra — anything that is an image rather than a table. **If you have been calling this `source_images/`, this is it.** |
 | `data/analysis/analysis.R` | **The project's one analysis script.** You fill in two sections — which columns are outcomes, which columns split them — and the battery in the other two is provided. The [`analysis`](https://github.com/mercer-science/paper-engine/blob/main/skills/analysis/SKILL.md) skill fills those two in with you. |
 | `data/analysis/analysis.md` | **Generated**, by `Rscript data/analysis/analysis.R`. Numbers, and no interpretation. It is the only place the drafter may take a number from. What the numbers *mean* goes in `plan/README.md`. |
-| `plan/authors.md`, `plan/affiliations.md` | Author order, addresses, grants, and the contribution matrix. **They ship blank — fill them in before you run the writing engine.** Two minutes on day one, when you already know the answers. The engine asks if you did not, but that is a backstop. |
+| `plan/author_information/authors.md`, `plan/author_information/affiliations.md` | Author order, addresses, grants, and the contribution matrix. **They ship blank — fill them in before you run the writing engine.** Two minutes on day one, when you already know the answers. The engine asks if you did not, but that is a backstop. |
+| `plan/author_information/conflict_statements/` | The **signed competing-interest forms**, one file per author, named with that author's initials — `JV.pdf`, `RWM_icmje.pdf`. Most journals will not send a paper out for review until every one is in. `submission-package` reads the file names, tells you who has not returned one, and never opens a form. The Competing Interests *sentence* printed in the paper stays in `affiliations.md`; these are the paperwork behind it. |
+| `plan/author_information/conflict_statements/blank_form/` | The journal's own **unsigned** form — the one everybody signs. The writing engine goes and finds it for you, on the round the Competing Interests statement first gets flagged, so you do not have to hunt through a publisher's site. It is a separate folder because a blank sitting among the signed ones would be counted as somebody's signature. |
 | `data/methods_facts.yml` | Instrument settings and reagent details, filled in at the bench. Thirty seconds now; a day to reconstruct in eight months. Anything left blank becomes a visible flag in the draft rather than a guess. |
 | `data/data_contract.md` | Each column's kind, units, expected range and permitted values. The kind decides the geom and the statistical test, so a figure argued from the contract is most of the way to the right form. |
 | `plan/figures/Fig01/` | One folder per float, holding its script and its output. The folder name *is* the number, so renumbering is renaming a folder. |
@@ -534,7 +558,7 @@ Standing instructions live in the project's `writing_config.yml`, are hand-edita
 
 <br>
 
-Put the file in the journal folder's `edits/` and say so. `docx_edits.py` reads the tracked changes and comments out of it — who changed what, and what each comment asked — and `ingest` turns that into rows in `edits/edits_status.md`: the ledger of every incoming request and what happened to it.
+Put the file in `drafts/edits/` — the project's one inbox, beside the source text — and say so. `docx_edits.py` reads the tracked changes and comments out of it — who changed what, and what each comment asked — and `ingest` turns that into rows in `edits/edits_status.md`: the ledger of every incoming request and what happened to it.
 
 ```bash
 python tools/docx_edits.py extract "edits/manuscript_r5_JV.docx"
@@ -609,11 +633,29 @@ Answers land in the edit ledger as pending rows and are applied by the next writ
 - **Cover letter** — addressed, with the significance framing taken from the abstract rather than invented.
 - **Title page** — byline, affiliations, counts, keywords.
 - **Statements** — contributions in CRediT's own wording, from the matrix you ticked; funding from the grant table.
-- **Suggested reviewers**, with conflicts noted.
+- **Suggested reviewers**, with conflicts noted — unless the journal wants them in the cover letter, in which case they go in the letter and there is no second file.
 - **Checklist** — every field of the journal's requirements, ticked or flagged.
 - **AI-use declaration** — a sixth file, when the journal wants one of its own.
 
 Each file is headed with the requirement it was written against — "required" or "not requested (nothing sourced)" — so the shape of it is visible either way.
+
+### Suggested reviewers live in one place
+
+**You keep the list in `drafts/source_text_rN/suggested_reviewers.md`**, beside `ai_disclosure.md`. That file is created for you the first time the package is built and is never overwritten, because everything *in* the package is rewritten on every run — a list kept there would be retyped every round.
+
+Where it comes out depends on `submission.suggested_reviewers_in` in the journal's requirements: `cover_letter` puts the names in the letter and writes no separate file, `separate` writes the standalone upload, `portal` writes neither because the journal collects them in its own system. Unrecorded, you get the standalone file, which is the safe answer both ways.
+
+### The name the files are sent under
+
+`manuscript_r5.docx` is the right name while you are working and the wrong name in an editor's inbox, which holds forty of them. When the paper is ready to go:
+
+```bash
+python tools/manuscript.py submission-names "<project>" --journal Langmuir --name PULSAR_DWI
+```
+
+That writes `PULSAR_DWI_manuscript.docx`, `PULSAR_DWI_title_page.docx` and the rest into `drafts/Langmuir/submission/upload/`. **It copies — the round-numbered files stay where they are**, because that is what the engine reads on the next round. Upload what is in `upload/` and nothing else; the `.md` files you edit are deliberately left out.
+
+It refuses three things, and each one is worth reading rather than forcing past: an outstanding flag, a build made from mock data, and a `short_name` that is only your project folder's name — that last one is the name an editor sees, so it asks you to choose it rather than guessing. **Re-run it after any rebuild**; the copies do not update themselves.
 
 ### The flag gate
 
@@ -629,10 +671,11 @@ Journals want this three different ways — a statement in the paper, a declarat
 
 ```bash
 python tools/manuscript.py ai-disclosure "<project>" --journal Langmuir
+python tools/manuscript.py ai-disclosure "<project>" --journal Langmuir --draft
 python tools/manuscript.py ai-disclosure "<project>" --journal Langmuir --from-ledger
 ```
 
-**The engine does not write the declaration.** It is a factual claim about how the paper was written, you are its author, and an engine writing its own disclosure is the wrong party to trust with it. What it will do is scaffold the statement as a stub made of flags — which is the gate — and, on request, tell you what it *factually did* out of the run ledger, naming the round every line came from. `--from-ledger` writes nothing the ledger does not contain, and on a project with no ledger it writes nothing at all.
+**The engine drafts the declaration; you confirm it.** While the journal's requirement is still `unknown`, the command scaffolds blanks — `--draft` refuses on those, because drafting against a policy nobody has read is answering a question nobody asked. Once it is recorded (read the journal's own guidelines and note the URL), `--draft` writes this toolkit's default statement into the stub under **one** flag that means "confirm this is true, don't compose it" — and it never overwrites a stub you have already written into or confirmed. On request, `--from-ledger` *appends* what the engine *factually did* out of the run ledger, naming the round every line came from, never replacing the statement above it. It writes nothing the ledger does not contain, and on a project with no ledger it writes nothing at all.
 
 > [!WARNING]
 > **Blank is not an option on the checklist row.** `ai_disclosure.required: unknown` *fails* that row, because "nobody looked" and "not required" are the two things it exists to keep apart. A journal that genuinely requires no declaration gets a ticked row carrying the date and the URL it was read from.
@@ -683,6 +726,8 @@ No skill and no agent is required for any of these. Every one takes `--json`, on
 | Mock floats | `python tools/scaffold.py mock-floats "<path>" --bundle idea.json` |
 | Image placeholder floats | `python tools/scaffold.py image-floats "<path>" --bundle panels.json` |
 | Read a lab's `Resources/` folder | `python tools/idea.py resources "<lab folder>"` |
+| Write (or rebuild) this project's lab pack brief | `python tools/labpack.py brief --project "<path>"` |
+| Has the pack moved since the brief was written? | `python tools/labpack.py brief --project "<path>" --check` |
 | Merge a settled idea into an existing project | `python tools/idea.py merge "<path>" --bundle idea.json` |
 | Panel art: add, and is it stale | `python tools/graphic_figure.py add\|status "<path>"` |
 
@@ -698,12 +743,19 @@ No skill and no agent is required for any of these. Every one takes `--json`, on
 | Search the literature | `python tools/scholar.py search "<query>" --limit 25` |
 | Verify one citation is real | `python tools/scholar.py verify --doi 10.1016/j.susc.2005.01.038` |
 | Verify a whole bibliography | `python tools/scholar.py check-refs "<path to .bib>"` |
+| What KIND each reference is — paper, preprint, database, thesis | `python tools/scholar.py source-types "<path to .bib>"` |
+| Has a later paper disagreed with this one | `python tools/scholar.py disputed "<doi>"` |
 | What cites this, and what it cites | `python tools/scholar.py related\|cited-by "<doi>"` |
 | Compound data | `python tools/scholar.py compound "copper(II) acetate"` |
 | Full text of an open-access paper | `python tools/pubmed.py sections <PMID>` |
 | Predicted or experimental structures | `python tools/structure.py alphafold --uniprot P00918`<br>`python tools/structure.py pdb --id 1CBS` |
+| What else looks like this sequence | `python tools/sequence.py blast --accession P58335 --submit` |
+| What else is in this region — the operon question | `python tools/sequence.py neighbors --accession <acc> --window 10` |
+| No AlphaFold model — what now | `python tools/sequence.py fold --accession P58335` |
 
 `scholar.py` is the one to search and verify through. PubMed alone cannot see *Surface Science* or *Vacuum*, and reports a paper that exists as `not_found`.
+
+**A BLAST miss is not evidence of novelty.** Sequence and structure data are evidence for **feasibility** and for **methods** — never for a gap. A gap still needs a paper stating the limitation, or two papers that conflict.
 
 </details>
 
@@ -717,6 +769,7 @@ No skill and no agent is required for any of these. Every one takes `--json`, on
 | What the writing engine would run | `python tools/manuscript.py plan "<path>" --journal X` |
 | Build the manuscript | `python tools/manuscript.py assemble "<path>" --journal X` |
 | What is still outstanding | `python tools/manuscript.py completeness "<path>"` |
+| Which document in this folder is the paper | `python tools/manuscript.py strays "<path>"` |
 | Check the built file against the journal's format | `python tools/manuscript.py format-check "<path>" --journal X` |
 | Open the next round | `python tools/manuscript.py round "<path>" --journal X` |
 | Retire a journal you are no longer sending to | `python tools/manuscript.py retire-journal "<path>" --journal X --to Y --dry-run` |
@@ -730,7 +783,7 @@ No skill and no agent is required for any of these. Every one takes `--json`, on
 </details>
 
 <details>
-<summary><b>The toolkit itself</b> — the skills, the help deck, and reporting a defect</summary>
+<summary><b>The toolkit itself</b> — the skills and the help deck</summary>
 
 <br>
 
@@ -738,9 +791,7 @@ No skill and no agent is required for any of these. Every one takes `--json`, on
 |---|---|
 | Are the skills findable from any folder | `python tools/install_skills.py status` |
 | Make them findable (clone route) | `python tools/install_skills.py install` |
-| Is reporting configured | `python tools/report.py status` |
-| Exactly what would be sent | `python tools/report.py consent --show` |
-| What is spooled but unsent | `python tools/report.py pending` |
+| What the engine files against itself | `python tools/manuscript.py log-issue --list-codes` |
 | Measure the help deck | `python tools/help_deck.py check` |
 | Rebuild the help deck — **discards hand edits** | `python tools/help_deck.py build` |
 
@@ -789,7 +840,7 @@ Check the install before anything else. **A harness that cannot resolve a skill 
 ### The engine did something wrong
 
 ```bash
-python tools/manuscript.py log-issue "<project>" --code short_slug \
+python tools/manuscript.py log-issue "<project>" --stage <stage> --code short_slug \
   --title "one line" --where "where in the engine" \
   --detail "what happened, generically" \
   --example "what happened on this project" \
@@ -797,6 +848,10 @@ python tools/manuscript.py log-issue "<project>" --code short_slug \
 ```
 
 You can also just say what happened and let the agent file it.
+
+**This works at every stage, not only while writing.** `--stage` is one of `setup`, `idea`, `analysis`, `figures`, `flags`, `writing`, `review`, `engine`, so a defect you hit while scaffolding a project or refining a figure is filed the same way and is recognisable upstream as having come from there. Leave it out and it is guessed at from the journal and the round — right while writing, a guess everywhere else — and the record says it was guessed. Every skill carries this command now; before 2026-09-18 only the writing engine did, so a fault found anywhere else was simply lost when the session ended.
+
+The project argument is positional and defaults to the current directory, so this works before a project exists.
 
 > [!IMPORTANT]
 > **The description is generic; the specifics go in `--example`.** This file is shared, and a redacted copy of every item travels to a reports repository the whole group can read — so an item says *"the drafter dropped a row from the table"*, and the sample that happened to be in that row goes in `--example`. A sample id or a composition anywhere else is refused, with the field and the token named; a measurement or a ratio is only reported, because blocking a defect from being filed over a number in its explanation would be worse than the leak. `--example` is optional and most items do not need one.
@@ -814,23 +869,49 @@ python tools/scaffold.py check "<project>"
 
 It never writes anything, so it is safe to run on a folder you are unsure about. It lists what is missing, which floats have no script, and which scripts are sitting where nothing will render them.
 
-### Reporting is configured or it is not
+### Nothing you write leaves your machine
 
-```bash
-python tools/report.py status
-```
+There is nothing to configure, and that is the whole of it. The engine keeps a defect list about **itself** — what it got wrong, in terms general enough to be true of any project — in `system-changes.md` inside the toolkit. Your prose, your data, your citations and your learned writing rules stay where they are.
 
-Defect reports go upstream only after you have configured a repository and a token *and* granted consent once, having read the exact bytes that would be sent. Setting that up is [`SETUP-NEW-MEMBER.md`](https://github.com/mercer-science/paper-engine/blob/main/help/SETUP-NEW-MEMBER.md), and skipping it breaks nothing — findings are kept locally rather than lost. **Your learned prose rules are never part of it.**
+Until 2026-09-21 there was a second half to this: a GitHub token, a consent gate, and a private repository the engine pushed redacted defect records to. It was removed. It cost every member three browser screens before they had written a word, and in the whole time it existed **it never sent anything** — 69 records sat waiting on a token nobody had minted.
 
 ### What is not built yet
 
 Stated here because this is where somebody would go looking, and a help page that describes a module which does not exist is worse than one that says "not yet".
 
-- **A defect report's prose is not held to a shape yet.** The consent gate covers the *list of fields* that would be sent, not the sentences inside the free-text ones. The rule — that an item states the issue generically, with the specifics corralled into a single `Specific Example:` field — is written down and **not yet enforced in code**. Until it is, a report can carry your project's specifics into a repository the whole group reads, so read `report.py pending` before you push.
-- **Sending a report upstream has never met real GitHub.** The loop is built and measured, but only against a stub server on localhost. The repositories exist now; the round trip through them has not been proven. Until it is, `report.py` spools findings locally and says so — nothing is lost and nothing is sent.
 - **`/plugin uninstall` destroys your learned rules.** An open defect with no fix, and the reason for the warning in [section 2](#2-install-it-once). Copy the plugin's data directory out before you reinstall or move machines.
 - **Nothing opens the next round automatically.** A plain `writing-engine` call can therefore edit prose inside a round that has already shipped. Known and deliberately left unfiled until it actually happens to somebody.
 - **There is no offline update check.** Whether your installed plugin is behind the repository is something you find out by updating it.
+  *(Built since — see [11.1](#111-am-i-behind) below. It is two commands, and the first one is the only thing in the toolkit that reaches the network.)*
+
+### 11.1 Am I behind?
+
+**You do not have to remember to ask.** Every skill checks at its opening step and tells you if you are behind — one line, before it starts work, and nothing at all when there is nothing to say. Nothing updates itself and nothing is ever blocked; it reports and gets out of the way.
+
+If you want to ask by hand anyway:
+
+```
+python tools/remote.py refresh        # what the skills run. Asks only if due
+python tools/remote.py check          # asks GitHub now, whatever the cache says
+python tools/release.py freshness     # is this toolkit behind?
+python tools/labpack.py show          # is the lab pack behind?
+```
+
+**What the automatic check costs you: almost nothing.** It asks GitHub at most once a day per repository and gives up after six seconds, so on a normal day every skill you open reads an answer already on your disk. Measured on the maintainer's machine: **0.17s** when the cached answer is good, against 2.4s for a real round trip. If you are offline it fails once, silently, records that it failed, and does not try again for an hour — so a plane is not eight timeouts.
+
+**It runs at a skill's opening and nowhere else.** No stage, no engine and no draft makes a network call, which is the guarantee the toolkit has always made and still makes.
+
+`remote.py check` uses **the GitHub login you already have** — the same one `/plugin marketplace add` used. There is no token to set up and nothing to paste. If your login has expired it fails quietly rather than opening a login window, and the freshness line then says `UNKNOWN` instead of pretending.
+
+What the answers mean:
+
+| What you see | What it means |
+|---|---|
+| `current as of the check today` | Genuinely current, and it says when it last had grounds to believe that |
+| `the repository has moved since this copy was installed` | Run `/plugin update`. If that reports nothing to do, the change did not carry a version bump and your copy is fine |
+| `UNKNOWN (...)` | It will not guess. The reason is on the line — usually a login that has expired, or a week with no successful answer |
+
+**Why `UNKNOWN` matters more than it looks.** Until 2026-09-23 this check compared two copies on your own disk that came down in the same download, so it reported `current` whether or not it was. A check that says "I do not know" is worth more than one that says "you are fine" without grounds — silence and good news look identical, and that is exactly how eleven days of corrected instrument entries went unread on the maintainer's own machine.
 
 ---
 
@@ -847,7 +928,7 @@ Stated here because this is where somebody would go looking, and a help page tha
 
 *Written by hand and checked against nothing — if a module has changed and this page has not, this page is the one that is wrong. The picture beside it, [`paper_engine_overview.pptx`](paper_engine_overview.pptx), has a generator, but the generator runs only when somebody asks it to, so that deck is yours to edit. How, and what the generator is still for, is [`help/README.md`](https://github.com/mercer-science/paper-engine/blob/main/help/README.md) in the engine repository.*
 
-*Details live in the skills themselves — [`writing-engine`](https://github.com/mercer-science/paper-engine/blob/main/skills/writing-engine/SKILL.md), [`idea-generation`](https://github.com/mercer-science/paper-engine/blob/main/skills/idea-generation/SKILL.md), [`setup-project-directory`](https://github.com/mercer-science/paper-engine/blob/main/skills/setup-project-directory/SKILL.md), [`create-graphic-figure`](https://github.com/mercer-science/paper-engine/blob/main/skills/create-graphic-figure/SKILL.md), [`refine-figure`](https://github.com/mercer-science/paper-engine/blob/main/skills/refine-figure/SKILL.md), [`flag-resolver`](https://github.com/mercer-science/paper-engine/blob/main/skills/flag-resolver/SKILL.md), [`analysis`](https://github.com/mercer-science/paper-engine/blob/main/skills/analysis/SKILL.md) — and the reasoning lives in [`specs/`](https://github.com/mercer-science/paper-engine/tree/main/specs/). Where this page and a skill disagree, **the skill is right**. Setting somebody else up is [`SETUP-NEW-MEMBER.md`](https://github.com/mercer-science/paper-engine/blob/main/help/SETUP-NEW-MEMBER.md); changing the toolkit is [`CONTRIBUTING.md`](https://github.com/mercer-science/paper-engine/blob/main/CONTRIBUTING.md).*
+*Details live in the skills themselves — [`writing-engine`](https://github.com/mercer-science/paper-engine/blob/main/skills/writing-engine/SKILL.md), [`idea-generation`](https://github.com/mercer-science/paper-engine/blob/main/skills/idea-generation/SKILL.md), [`setup-project-directory`](https://github.com/mercer-science/paper-engine/blob/main/skills/setup-project-directory/SKILL.md), [`create-graphic-figure`](https://github.com/mercer-science/paper-engine/blob/main/skills/create-graphic-figure/SKILL.md), [`refine-figure`](https://github.com/mercer-science/paper-engine/blob/main/skills/refine-figure/SKILL.md), [`flag-resolver`](https://github.com/mercer-science/paper-engine/blob/main/skills/flag-resolver/SKILL.md), [`analysis`](https://github.com/mercer-science/paper-engine/blob/main/skills/analysis/SKILL.md), [`reorganize-directory`](https://github.com/mercer-science/paper-engine/blob/main/skills/reorganize-directory/SKILL.md) — and the reasoning lives in [`specs/`](https://github.com/mercer-science/paper-engine/blob/main/specs/). Where this page and a skill disagree, **the skill is right**. Setting somebody else up is [`SETUP-NEW-MEMBER.md`](https://github.com/mercer-science/paper-engine/blob/main/help/SETUP-NEW-MEMBER.md); changing the toolkit is [`CONTRIBUTING.md`](https://github.com/mercer-science/paper-engine/blob/main/CONTRIBUTING.md).*
 
 ---
 
